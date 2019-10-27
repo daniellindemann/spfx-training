@@ -1,0 +1,78 @@
+{
+	"SPFX Mock Event Items": {
+		"scope": "typescript",
+		"prefix": "spfx-mockeventitems",
+		"body": [
+			"private static Items: IEventItem[] = [",
+			"    { ID: 1, Title: 'Event 01', StartDate: '2019-10-28T11:03:24Z', EndDate: '2019-10-28T12:03:24Z' },",
+			"    { ID: 2, Title: 'Event 02', StartDate: '2019-11-02T15:47:06Z', EndDate: '2019-11-02T16:47:06Z' },",
+			"    { ID: 3, Title: 'Event 03', StartDate: '2019-10-29T09:00:00Z', EndDate: '2019-10-29T10:00:00Z' },",
+			"    { ID: 4, Title: 'An event with an very long long long long and special title', StartDate: '2019-11-05T18:24:17Z', EndDate: '2019-11-05T19:24:17Z' },",
+			"    { ID: 5, Title: 'Global Office 365 Developer Bootcamp', StartDate: '2019-10-29T10:00:00Z', EndDate: '2019-10-29T17:00:00Z' }",
+			"  ];"
+		],
+		"description": ""
+	},
+	"SPFX SP Query Options": {
+		"scope": "typescript",
+		"prefix": "spfx-spqueryoptions",
+		"body": [
+			"const selects = [",
+			"      'ID',",
+			"      'Title',",
+			"      'StartDate',",
+			"      'EndDate'",
+			"    ];",
+			"    const filters = [",
+			"      `EndDate ge datetime'${new Date().toISOString()}'`",
+			"    ];",
+			"    const orders = [",
+			"      `StartDate asc`",
+			"    ];"
+		],
+		"description": ""
+	},
+	"SPFX SP Query String": {
+		"scope": "typescript",
+		"prefix": "spfx-spquerystring",
+		"body": [
+			"`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.options.listname}')/items?$select=${selects.join()}&$filter=${filters.join(' and ')}&$orderBy=${orders.join(',')}`"
+		],
+		"description": ""
+	},
+	"SPFX Web API Permissions": {
+		"scope": "json",
+		"prefix": "spfx-webapipermissions",
+		"body": [
+			"\"webApiPermissionRequests\": [",
+			"      {",
+			"        \"resource\": \"Microsoft Graph\",",
+			"        \"scope\": \"Calendars.ReadWrite\"",
+			"      }",
+			"    ]"
+		],
+		"description": ""
+	},
+	"SPFX WebPack Bundle Analyzer": {
+		"prefix": "spfx-webpack-bundle-analyzer",
+		"body": [
+		 "build.configureWebpack.mergeConfig({",
+		 "  additionalConfiguration: function(generatedConfiguration) {",
+		 "    const lastDirName = path.basename(__dirname);",
+		 "    const dropPath = path.join(__dirname, 'temp', 'stats');",
+		 "    generatedConfiguration.plugins.push(new bundleAnalyzer.BundleAnalyzerPlugin({",
+		 "      openAnalyzer: false,",
+		 "      analyzerMode: 'static',",
+		 "      reportFilename: path.join(dropPath, `${lastDirName}.stats.html`),",
+		 "      generateStatsFile: true,",
+		 "      statsFilename: path.join(dropPath, `${lastDirName}.stats.json`),",
+		 "      logLevel: 'error'",
+		 "    }));",
+		 "",
+		 "    return generatedConfiguration;",
+		 "  }",
+		 "});"
+		],
+		"description": "spfx webpack analyzer snippet for spfx gulpfile. 'path' and 'webpack-bundle-analyzer' must be imported."
+	   }
+}
