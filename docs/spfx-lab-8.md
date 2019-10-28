@@ -142,3 +142,5 @@ Bestätige nochmals mit einem Klick auf 'Save'.
 Der WebPart steht nun in Teams bereit und gibt den Namen des Channels aus.
 
 ![Screenshot Teams WebPart in Channel](./images/teamswebpartinchannel.png)
+
+<sub>[Code zum Projekt](../src/lab8)</sub>
