@@ -39,7 +39,7 @@ export default class EventList extends React.Component<IEventListProps, IEventLi
                 {this.props.items &&
                   this.props.items.map(item => {
                     return (
-                      <tr key='{item.ID}'>
+                      <tr key={item.ID}>
                         <td>{item.Title}</td>
                         <td>{item.StartDate}</td>
                         <td>{item.EndDate}</td>

@@ -41,7 +41,7 @@ export default class EventList extends React.Component<IEventListProps, IEventLi
                 {this.props.items &&
                   this.props.items.map(item => {
                     return (
-                      <tr key='{item.ID}'>
+                      <tr key={item.ID}>
                         <td>{item.Title}</td>
                         <td>{format(new Date(item.StartDate as string), 'ccc, dd. MMMM yyyy hh:mm', { locale: de })}</td>
                         <td>{format(new Date(item.EndDate as string), 'ccc, dd. MMMM yyyy hh:mm', { locale: de })}</td>
