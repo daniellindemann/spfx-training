@@ -2,9 +2,11 @@
 
 # SharePoint Framework - WebPart Tutorial
 
-## Labs
+Das Lab zeigt die Entwicklung eines WebParts, dem Event list WebPart, mit dem SharePoint Framework.
 
-Zu jedem Lab gibt es einen Projekt mit lauffähigem Code 😊.
+![Screenshot Event list WebPart](./docs/images/eventlistwebpart.png)
+
+## Labs
 
 ### [Lab 1 - Getting Started](./docs/spfx-lab-1.md)
 ### [Lab 2 - Lokales entwicklen](./docs/spfx-lab-2.md)
@@ -16,3 +18,5 @@ Zu jedem Lab gibt es einen Projekt mit lauffähigem Code 😊.
 ### [EXTRA: Lab 8 - SPFx WebPart in Microsoft Teams](./docs/spfx-lab-8.md)
 
 ##  Abgeschlossenes Projekt
+
+Das fertige Projekt zu diesem Lab findest du im Ordner [`eventListWebPart`](./src/eventListWebPart).

@@ -186,3 +186,4 @@ Starte `gulp serve` und öffne die SharePoint Workbench unter `https://<deine Te
 
 ![Screenshot Outlook Event](./images/outlookevent.png)
 
+<sub>[Code zum Projekt](../src/lab5)</sub>

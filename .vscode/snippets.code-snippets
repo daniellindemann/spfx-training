@@ -1,4 +1,49 @@
 {
+	"SPFX onInit": {
+		"scope": "typescript",
+		"prefix": "spfx-oninit",
+		"body": [
+			"protected onInit(): Promise<void> {",
+			"    this.eventsService = Environment.type == EnvironmentType.Local ? new MockEventsService() : new SPEventsService(this.context, this.properties);",
+			"",
+			"    return Promise.resolve();",
+			"  }"
+		],
+		"description": ""
+	},
+	"SPFX render": {
+		"scope": "typescript",
+		"prefix": "spfx-render",
+		"body": [
+			"public render(): void {",
+			"    if(!this.properties.listname) {",
+			"      this.context.statusRenderer.renderError(this.domElement, 'Configure the list that contains the event data via webpart properties.');",
+			"      return;",
+			"    }",
+			"",
+			"    this.eventsService.get()",
+			"      .then((events) => {",
+			"        Log.info('EventListWebPart', `Got ${events ? events.length : 0} events`, this.context.serviceScope);",
+			"",
+			"        const element: React.ReactElement<IEventListProps > = React.createElement(",
+			"          EventList,",
+			"          {",
+			"            description: this.properties.description,",
+			"            items: events,",
+			"            eventsService: this.eventsService",
+			"          }",
+			"        );",
+			"",
+			"        ReactDom.render(element, this.domElement);",
+			"      })",
+			"      .catch((err) => {",
+			"        this.context.statusRenderer.renderError(this.domElement, err.message ? err.message : 'Unable to get event data');",
+			"        Log.warn('EventListWebPart', err.message, this.context.serviceScope);",
+			"      });",
+			"  }"
+		],
+		"description": ""
+	},
 	"SPFX Mock Event Items": {
 		"scope": "typescript",
 		"prefix": "spfx-mockeventitems",
@@ -10,6 +55,34 @@
 			"    { ID: 4, Title: 'An event with an very long long long long and special title', StartDate: '2019-11-05T18:24:17Z', EndDate: '2019-11-05T19:24:17Z' },",
 			"    { ID: 5, Title: 'Global Office 365 Developer Bootcamp', StartDate: '2019-10-29T10:00:00Z', EndDate: '2019-10-29T17:00:00Z' }",
 			"  ];"
+		],
+		"description": ""
+	},
+	"SPFX Html Table": {
+		"scope": "typescriptreact",
+		"prefix": "spfx-htmltable",
+		"body": [
+			"<table>",
+			"              <tbody>",
+			"                <tr>",
+			"                  <th>Event</th>",
+			"                  <th>Start Date</th>",
+			"                  <th>End Date</th>",
+			"                  <th>Join</th>",
+			"                </tr>",
+			"                {this.props.items &&",
+			"                  this.props.items.map(item => {",
+			"                    return (",
+			"                      <tr key='{item.ID}'>",
+			"                        <td>{item.Title}</td>",
+			"                        <td>{format(new Date(item.StartDate as string), 'ccc, dd. MMMM yyyy hh:mm', { locale: de })}</td>",
+			"                        <td>{format(new Date(item.EndDate as string), 'ccc, dd. MMMM yyyy hh:mm', { locale: de })}</td>",
+			"                        <td><DefaultButton text=\"Join\" href={'/add/' + item.ID} onClick={ (e) => { e.preventDefault(); this.addToCalendar(item.ID); } } /></td>",
+			"                      </tr>",
+			"                    );",
+			"                  })}",
+			"              </tbody>",
+			"            </table>"
 		],
 		"description": ""
 	},
@@ -32,11 +105,93 @@
 		],
 		"description": ""
 	},
+	"SPFX SP Query": {
+		"scope": "typescript",
+		"prefix": "spfx-spquery",
+		"body": [
+			"this.context.spHttpClient.get(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.options.listname}')/items?$select=${selects.join()}&$filter=${filters.join(' and ')}&$orderBy=${orders.join(',')}`, SPHttpClient.configurations.v1)",
+			"        .then((res: SPHttpClientResponse) => {",
+			"          return res.json();",
+			"        })",
+			"        .then((json) => {",
+			"          if(json.error) {",
+			"            reject(json.error);",
+			"            return;",
+			"          }",
+			"",
+			"          resolve(json.value as IEventItem[]);",
+			"        });",
+			"    });"
+		],
+		"description": ""
+	},
 	"SPFX SP Query String": {
 		"scope": "typescript",
 		"prefix": "spfx-spquerystring",
 		"body": [
 			"`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.options.listname}')/items?$select=${selects.join()}&$filter=${filters.join(' and ')}&$orderBy=${orders.join(',')}`"
+		],
+		"description": ""
+	},
+	"SPFX Graph Query": {
+		"scope": "typescript",
+		"prefix": "spfx-graphquery",
+		"body": [
+			"this.context.msGraphClientFactory.getClient()",
+			"        .then((client) => {",
+			"          client.api('me/events')",
+			"            .version('v1.0')",
+			"            .post({",
+			"              subject: event.Title,",
+			"              start: {",
+			"                datetime: event.StartDate instanceof Date ? (event.StartDate as Date).toISOString() : event.StartDate,",
+			"                timezone: 'UTC'",
+			"              },",
+			"              end: {",
+			"                datetime: event.EndDate instanceof Date ? (event.EndDate as Date).toISOString() : event.EndDate,",
+			"                timezone: 'UTC'",
+			"              }",
+			"            })",
+			"            .then((res) => {",
+			"              resolve(res);",
+			"            })",
+			"            .catch((err) => {",
+			"              reject(err);",
+			"            });",
+			"        });"
+		],
+		"description": ""
+	},
+	"SPFX SP Events Service addEventToCalendar": {
+		"scope": "typescript",
+		"prefix": "spfx-addEventToCalendar",
+		"body": [
+			"public addEventToCalendar(event: IEventItem): Promise<any> {",
+			"    return new Promise<any>((resolve, reject) => {",
+			"      this.context.msGraphClientFactory.getClient()",
+			"        .then((client) => {",
+			"          client.api('me/events')",
+			"            .version('v1.0')",
+			"            .post({",
+			"              subject: event.Title,",
+			"              start: {",
+			"                datetime: event.StartDate instanceof Date ? (event.StartDate as Date).toISOString() : event.StartDate,",
+			"                timezone: 'UTC'",
+			"              },",
+			"              end: {",
+			"                datetime: event.EndDate instanceof Date ? (event.EndDate as Date).toISOString() : event.EndDate,",
+			"                timezone: 'UTC'",
+			"              }",
+			"            })",
+			"            .then((res) => {",
+			"              resolve(res);",
+			"            })",
+			"            .catch((err) => {",
+			"              reject(err);",
+			"            });",
+			"        });",
+			"    });",
+			"  }"
 		],
 		"description": ""
 	},
@@ -47,6 +202,10 @@
 			"\"webApiPermissionRequests\": [",
 			"      {",
 			"        \"resource\": \"Microsoft Graph\",",
+			"        \"scope\": \"User.ReadBasic.All\"",
+			"      }",
+			"      {",
+			"        \"resource\": \"Microsoft Graph\",",
 			"        \"scope\": \"Calendars.ReadWrite\"",
 			"      }",
 			"    ]"
@@ -54,6 +213,7 @@
 		"description": ""
 	},
 	"SPFX WebPack Bundle Analyzer": {
+		"scope": "javascript",
 		"prefix": "spfx-webpack-bundle-analyzer",
 		"body": [
 		 "build.configureWebpack.mergeConfig({",

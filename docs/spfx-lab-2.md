@@ -151,3 +151,5 @@ Das Anzeigen der Event Daten passiert in der React-Komponente `EventList.tsx` im
 Zum Anzeigen der Events um zum Testen in der Konsole `gulp serve` eingeben. Der Browser öffnet sich und der WebPart zeigt eine Tabelle mit Events an (auch wenn nicht in perfekter Schönheit).
 
 ![Screenshot WebPart mit Events](./images/webpartlocal.png)
+
+<sub>[Code zum Projekt](../src/lab2)</sub>

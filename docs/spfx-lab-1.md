@@ -59,3 +59,4 @@ Im Ordner `config` findest du alle Dateien die das Projekt beschreiben. z.B steh
 Im Ordner `src/webparts` findest du den erstellten WebPart mit allen Abhängigkeiten. Da ein React-SPFx-Projekt erstellt wurde ist neber der `xWebPart.ts`-Datei ein `components`-Ordner mit der React-Komponente, die vom WebPart gerendert wird.
 
 
+<sub>[Code zum Projekt](../src/lab1)</sub>
