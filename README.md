@@ -20,3 +20,11 @@ Das Lab zeigt die Entwicklung eines WebParts, dem Event list WebPart, mit dem Sh
 ##  Abgeschlossenes Projekt
 
 Das fertige Projekt zu diesem Lab findest du im Ordner [`eventListWebPart`](./src/eventListWebPart).
+
+## Teams Bot Lab (by Christian Glessner)
+
+### https://github.com/ltwlf/microsoft-teams-training
+
+## Slides
+
+### https://speakerdeck.com/daniellindemann/global-microsoft-365-developer-bootcamp-2019-sharepoint-framework-berlin
